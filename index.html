@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>The Emraan Hashmi Lover</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#050505;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{overflow:hidden}
+.page{position:relative;width:100%;height:100vh;min-height:620px;overflow:hidden;background:#090909}
+.bg{position:absolute;inset:0;background-image:linear-gradient(to bottom,rgba(0,0,0,.10),rgba(0,0,0,.35) 48%,rgba(0,0,0,.82) 100%),url("emraan.jpg");background-size:cover;background-position:center top;filter:saturate(1.05)}
+.blur{position:absolute;inset:0;background:inherit;filter:blur(18px);transform:scale(1.08);opacity:.25}
+.content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column}
+.topbar{height:86px;padding:42px 28px 0;display:flex;justify-content:flex-end;gap:22px}
+.icon{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.90);color:#111;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:21px;box-shadow:0 2px 14px #0005}
+.brand{margin-top:22px;text-align:center;padding:0 18px}
+.kicker{font-size:12px;letter-spacing:4px;opacity:.85}
+h1{font-size:clamp(38px,10vw,78px);line-height:.9;margin:12px 0 8px;text-transform:uppercase;text-shadow:0 5px 25px #000;font-weight:900}
+h1 span{display:block;color:#e52c22}
+.sub{font-size:12px;letter-spacing:5px;color:#ddd}
+.spacer{flex:1}
+.player{
+ margin:0 18px 22px;padding:13px 16px 13px 12px;border-radius:38px;
+ background:linear-gradient(110deg,rgba(104,52,42,.93),rgba(126,50,43,.90));
+ box-shadow:0 16px 45px #0009, inset 0 1px #fff2;
+ backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.row{display:flex;align-items:center;gap:13px}
+.cover{width:72px;height:72px;border-radius:50%;object-fit:cover;box-shadow:0 3px 14px #0008}
+.meta{min-width:0;flex:1}
+.song{font-size:18px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.artist{font-size:14px;color:#ddd;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actions{display:flex;align-items:center;gap:18px}
+.skip{font-size:21px}
+.mainplay{width:58px;height:58px;border-radius:50%;border:0;background:#fff;color:#111;font-size:25px;display:flex;align-items:center;justify-content:center}
+.progress{height:3px;background:#ffffff55;border-radius:5px;margin:9px 7px 0;overflow:hidden}
+.bar{height:100%;width:0;background:#fff;border-radius:5px}
+.time{display:flex;justify-content:space-between;font-size:11px;color:#ddd;margin:4px 7px 0}
+.list{position:absolute;left:18px;right:18px;bottom:145px;max-height:45vh;overflow:auto;display:none}
+.item{padding:12px 15px;border-bottom:1px solid #ffffff22;background:#111b;border-radius:10px;margin:4px 0}
+.item b{font-size:13px}.item small{color:#bbb;display:block;margin-top:3px}
+.hint{text-align:center;font-size:11px;color:#ddd;margin-top:8px}
+@media(max-width:500px){
+ .topbar{height:74px;padding:35px 20px 0}
+ .icon{width:38px;height:38px;font-size:18px}
+ .brand{margin-top:18px}
+ h1{font-size:48px}
+ .player{margin:0 10px 14px}
+ .cover{width:68px;height:68px}
+ .actions{gap:10px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+ <div class="blur"></div><div class="bg"></div>
+ <div class="content">
+  <div class="topbar">
+   <div class="icon">◉</div><div class="icon">▷</div>
+  </div>
+
+  <div class="brand">
+   <div class="kicker">THE 90s • THE 2000s • FOREVER</div>
+   <h1>THE EMRAAN <span>HASHMI LOVER ♥</span></h1>
+   <div class="sub">THE VOICE OF LOVE</div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="list" id="list"></div>
+
+  <div class="player">
+   <div class="row">
+    <img class="cover" src="emraan.jpg" alt="Emraan Hashmi">
+    <div class="meta">
+      <div class="song" id="title">The Emraan Hashmi Era</div>
+      <div class="artist" id="artist">Tap ▶ to open the song</div>
+    </div>
+    <div class="actions">
+      <button class="skip" onclick="prev()">|◀</button>
+      <button class="mainplay" id="play" onclick="openSpotify()">▶</button>
+      <button class="skip" onclick="next()">▶|</button>
+    </div>
+   </div>
+   <div class="progress"><div class="bar" id="bar"></div></div>
+   <div class="time"><span id="elapsed">0:00</span><span>Spotify</span></div>
+   <div class="hint">▶ opens the selected song in Spotify for full playback</div>
+  </div>
+ </div>
+</div>
+
+<script>
+const songs=[
+ ["Kaho Na Kaho","Emraan Hashmi Era","https://open.spotify.com/track/3zFEAAxRWeE3mBYh6YOIil"],
+ ["Song 02","Emraan Hashmi","https://open.spotify.com/track/3HFjh7QljnUCBLsoTwMuTj"],
+ ["Song 03","Emraan Hashmi","https://open.spotify.com/track/3Kl8p2PxVf8eAayLwTxOIm"],
+ ["Song 04","Emraan Hashmi","https://open.spotify.com/track/4vgCpNUUcpEIBifidhQOnR"],
+ ["Song 05","Emraan Hashmi","https://open.spotify.com/track/0zQa7QXLpUZfrrsWbgDZll"],
+ ["Song 06","Emraan Hashmi","https://open.spotify.com/track/5O4AGvOVFSs5ipu3iNOuoi"],
+ ["Song 07","Emraan Hashmi","https://open.spotify.com/track/47l2Dd3XPBLio3kjbEMyDJ"],
+ ["Song 08","Emraan Hashmi","https://open.spotify.com/track/4IGfpRPTnhzZyL74Ilubrb"],
+ ["Song 09","Emraan Hashmi","https://open.spotify.com/track/5WncH5iZ5GFlnXm7jKEXVP"],
+ ["Song 10","Emraan Hashmi","https://open.spotify.com/track/5fwRhPXAvGgzUxW62ZCvEg"],
+ ["Song 11","Emraan Hashmi","https://open.spotify.com/track/3i8MmnLZlkkxv8jexworxD"],
+ ["Song 12","Emraan Hashmi","https://open.spotify.com/track/3OLFqbd9ZeVjaUKTiaLsD6"],
+ ["Song 13","Emraan Hashmi","https://open.spotify.com/track/0KSH21KbnIHHb1J4j8QrbY"]
+];
+let i=0, sec=0;
+const title=document.getElementById("title"),artist=document.getElementById("artist");
+function load(n){i=(n+songs.length)%songs.length;title.textContent=songs[i][0];artist.textContent=songs[i][1];sec=0;document.getElementById("bar").style.width="0%";document.getElementById("elapsed").textContent="0:00"}
+function openSpotify(){window.open(songs[i][2],"_blank")}
+function next(){load(i+1)}
+function prev(){load(i-1)}
+load(0);
+</script>
+</body>
+</html>
